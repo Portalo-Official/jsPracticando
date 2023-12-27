@@ -1,5 +1,35 @@
 
-body {
+html, body {
     background-image: url("../img/fondo/background-vector.jpg");
     background-color: #cccccc;
+    color: aliceblue;
   }
+
+  h1{
+    color:aliceblue !important;
+  }
+
+.titulo{
+  width: 100% !important;
+  text-align: center;
+  color: aliceblue;
+  padding: .5rem;
+  font-size: 1.4em;
+  font-weight: 600;
+}
+
+.fix-ancho{
+  width: 100%;
+}
+
+.carta{
+  width: 10rem;
+  position: relative;
+  left: 5rem;
+  margin-left: -4.5rem;
+}
+
+#crupier-cartas, #jugador-cartas {
+  height: 18rem;
+  
+}
