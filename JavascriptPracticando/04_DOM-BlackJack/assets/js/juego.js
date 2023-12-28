@@ -1,8 +1,24 @@
 
-// ############ CREAR DECK #################### 
+// ######## INICIALIZACIONES ##############
+// Variables para la baraja
 const tipos      = ['C', 'D', 'H', 'S'];
-const especiales = ['J', 'Q', 'K', 'A']
+const especiales = ['J', 'Q', 'K', 'A'];
+// ------- Elementos del HTML -------
+let btnNewGame        = document.getElementById('new-game');
+let btnGiveCard       = document.querySelector('#give-card');
+let btnStop           = document.querySelector('#stop');
+let puntosHTML        = document.querySelectorAll('small'); // [0] crupier [1] jugador
+let nombreJugador     = document.getElementById('nombre-jugador');
+let cartasJugador     = document.getElementById('jugador-cartas');
+let cartasCrupier     = document.getElementById('crupier-cartas');
 
+let deck // baraja
+let carta // carta pedida
+let valor // valor de la carta
+let puntosJugador = 0,
+    puntosCrupier = 0;
+
+// ############ CREAR DECK #################### 
 /**
  * funcion que crea una baraja 
  * @returns string[] correspondiente a baraja francesa
@@ -10,7 +26,7 @@ const especiales = ['J', 'Q', 'K', 'A']
 const crearDeck = () => {
     let deck = [];
     // Cartas numericas
-    for (let i = 1; i < 10; i++) {
+    for (let i = 2; i < 10; i++) {
         for( let tipo of tipos){
             deck.push(i+tipo);
         }
@@ -67,28 +83,41 @@ const valoresCartaTutorialReducida = (card) =>{
     return (!isNaN(numero)) ? numero*1:
             (numero === 'A') ? 11 : 10;
 } 
+// ############## añadir html #################
+const addCardHTML = (card) =>{
+   let newCard = document.createElement('img');
+   newCard.src= `assets/img/cartas/`+card+`.png`;
+   newCard.classList.add('carta');
+   cartasJugador.append(newCard);
+}
 
+// ############# Listeners ##################
+btnGiveCard.addEventListener('click', () =>{
+    const carta = pedirCarta(deck);
+    console.log({carta});
+    puntosJugador += getValorCarta(carta);
+    puntosHTML[1].innerText= puntosJugador;
+    addCardHTML(carta);
+})
+
+btnNewGame.addEventListener('click', () =>{
+    puntosHTML[0].innerText = 0;
+    puntosHTML[1].innerText = 0;
+    puntosCrupier = 0;
+    puntosJugador = 0;
+    deck = shuffleDeck(crearDeck());
+    
+})
 
 // *********** MAIN ************** 
+deck = shuffleDeck(crearDeck());
+//carta = pedirCarta(deck);
+// console.log({carta});
+// valor = getValorCarta(carta);
+// console.log({valor});
 
-let deck = shuffleDeck(crearDeck());
- console.log(deck);
-let carta = pedirCarta(deck);
- console.log({carta});
-let valor = getValorCarta(carta);
-console.log({valor});
+//btnNewGame.addEventListener
 
-let cartas = document.getElementsByClassName('carta');
-let botones= document.getElementsByTagName('button');
-let jugador= document.getElementById('jugador-cartas');
-let crupier= document.getElementById('crupier-cartas');
-let jSelector= document.querySelector('#jugador-cartas');
-let cartaSelector= document.querySelector('.carta');
-let cartasSelector= document.querySelectorAll('.carta');
-
-console.log({jSelector});
-console.log({cartaSelector});
-console.log({cartasSelector});
 
 // // Comprobar si al vaciar la baraja salta error contenplado
 // for (let i = 0; i < 54; i++) {
