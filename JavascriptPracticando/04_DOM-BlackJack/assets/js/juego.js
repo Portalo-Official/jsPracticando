@@ -3,6 +3,7 @@
 // Variables para la baraja
 const tipos      = ['C', 'D', 'H', 'S'];
 const especiales = ['J', 'Q', 'K', 'A'];
+const MAX_PUNTUACION = 21;
 // ------- Elementos del HTML -------
 let btnNewGame        = document.getElementById('new-game');
 let btnGiveCard       = document.querySelector('#give-card');
@@ -17,6 +18,7 @@ let carta // carta pedida
 let valor // valor de la carta
 let puntosJugador = 0,
     puntosCrupier = 0;
+let cartasFuerasDeBaraja = [] // string [] de las cartas añadidas
 
 // ############ CREAR DECK #################### 
 /**
@@ -84,21 +86,76 @@ const valoresCartaTutorialReducida = (card) =>{
             (numero === 'A') ? 11 : 10;
 } 
 // ############## añadir html #################
-const addCardHTML = (card) =>{
+const addCardHTML = (card, mesa) =>{
    let newCard = document.createElement('img');
-   newCard.src= `assets/img/cartas/`+card+`.png`;
+   newCard.src= `assets/img/cartas/${card}.png`;
    newCard.classList.add('carta');
-   cartasJugador.append(newCard);
+   mesa.append(newCard);
+   cartasFuerasDeBaraja.push(newCard)
+}
+// ###### Logica ###########
+function comprobarPuntosJugador(){
+    let mensaje = ''
+    if(puntosJugador == 21){
+        mensaje='Has Ganado';
+        console.warn(mensaje);
+        // Bloquear boton
+        btnGiveCard.disabled = true;
+        turnoCrupier(puntosJugador);
+    }else if(puntosJugador > 21){
+        mensaje = 'Has Perdido';
+        console.warn(mensaje);
+        // Bloquear boton
+        btnGiveCard.disabled = true;
+        turnoCrupier(puntosJugador);
+    }
+}
+
+function turnoCrupier(puntos){
+    do{
+        const carta = pedirCarta(deck);
+        //console.log({carta});
+        // Incrementar puntos
+        puntosCrupier += getValorCarta(carta);
+        puntosHTML[0].innerText= puntosCrupier;
+        addCardHTML(carta, cartasCrupier);
+    }while(puntosCrupier < puntos && puntosCrupier<MAX_PUNTUACION && puntos<=MAX_PUNTUACION)
+}
+
+function limpiarMesa(){
+    for (let carta of cartasFuerasDeBaraja) {
+        carta.remove();
+    }
+    cartasFuerasDeBaraja=[];
+    //console.log(cartasFuerasDeBaraja);
+}
+
+function comprobarGanador(){
+    
+    if(puntosJugador > 21){
+        mensaje = 'Has perdido'
+        console.log(mensaje);
+    }else if(puntosCrupier > 21 || (puntosJugador>puntosCrupier && puntosJugador<=21)){
+        mensaje = 'Has ganado'
+        console.log(mensaje);
+        
+    }else if( puntosJugador < puntosCrupier ){
+        mensaje = 'Has perdido';
+        console.log(mensaje);
+    }else{
+        mensaje = 'Nadie Gana';
+        console.log(mensaje);
+    }
 }
 
 // ############# Listeners ##################
 btnGiveCard.addEventListener('click', () =>{
     const carta = pedirCarta(deck);
-    console.log({carta});
     puntosJugador += getValorCarta(carta);
     puntosHTML[1].innerText= puntosJugador;
-    addCardHTML(carta);
-})
+    addCardHTML(carta, cartasJugador);
+    comprobarPuntosJugador()
+});
 
 btnNewGame.addEventListener('click', () =>{
     puntosHTML[0].innerText = 0;
@@ -106,8 +163,23 @@ btnNewGame.addEventListener('click', () =>{
     puntosCrupier = 0;
     puntosJugador = 0;
     deck = shuffleDeck(crearDeck());
-    
-})
+    limpiarMesa();
+    btnGiveCard.disabled=false;
+    btnStop.disabled=false;
+    console.clear();
+});
+
+btnStop.addEventListener('click', () =>{
+    if(puntosJugador != 0){
+        btnGiveCard.disabled = true;
+        btnStop.disabled     = true;
+        turnoCrupier(puntosJugador);
+        comprobarGanador();
+    }else {
+        console.log('Pide al menos una carta');
+    }
+});
+
 
 // *********** MAIN ************** 
 deck = shuffleDeck(crearDeck());
