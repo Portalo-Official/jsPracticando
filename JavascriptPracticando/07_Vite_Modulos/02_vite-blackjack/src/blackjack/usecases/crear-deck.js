@@ -1,28 +1,32 @@
 import _ from 'underscore'
 
-// Esta función crea un nuevo deck
 /**
- * 
+ * Crea una nueva baraja de cartas.
  * @param {Array<string>} tiposDeCarta 
  * @param {Array<string>} tiposEspeciales 
- * @returns 
+ * @returns {Array<string>} array de string de una baraja
  */
 export const crearDeck = (tiposDeCarta, tiposEspeciales) => {
 
-  let deck = [];
-  
-  for (let i = 2; i <= 10; i++) {
-    for (let tipo of tiposDeCarta) {
-      deck.push(i + tipo);
-    }
-  }
+    if (!tiposDeCarta || tiposDeCarta.length == 0)
+      throw new Error("TiposDeCartas es obligatorio");
+    if (!tiposEspeciales || tiposEspeciales.length == 0)
+      throw new Error("TiposEspeciales es obligatorio");
 
-  for (let tipo of tiposDeCarta) {
-    for (let esp of tiposEspeciales) {
-      deck.push(esp + tipo);
+    let deck = [];
+
+    for (let i = 2; i <= 10; i++) {
+    for (let tipo of tiposDeCarta) {
+        deck.push(i + tipo);
     }
-  }
-  // console.log( deck );
-  deck = _.shuffle(deck);
-  return deck;
+    }
+
+    for (let tipo of tiposDeCarta) {
+    for (let esp of tiposEspeciales) {
+        deck.push(esp + tipo);
+    }
+    }
+    // console.log( deck );
+    deck = _.shuffle(deck);
+    return deck;
 };
