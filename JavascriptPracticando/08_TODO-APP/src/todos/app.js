@@ -1,15 +1,15 @@
+import html from "./app.html?raw";
 
 /**
  * 
- * @param {*} elementId 
+ * @param {String} elementId - id del tag
  */
 export const App = (elementId) => {
 
     //Cuando la funcion app se llama
     (() => {
-        
         const app = document.createElement('div');
-        app.innerHTML = '<h1>Todo App</h1>';
+        app.innerHTML = html;
         document.querySelector(elementId).append(app);
 
     })();
