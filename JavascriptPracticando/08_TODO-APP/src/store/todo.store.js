@@ -25,7 +25,13 @@ const loadStore = () =>{
     throw new Error('Not implemented');
 }
 
-const getTodo = (filter = Filters.All)=>{
+/**
+ * 
+ * @param {Filters} filter - Filtro 
+ * @returns {Array<Todo>} array de Todo segun el filtro como parametro
+ * @throws Error si el filtro no existe.
+ */
+const getTodos = (filter = Filters.All)=>{
     
     switch(filter){
         case Filters.All:
@@ -79,6 +85,10 @@ const setFilter = (newFilter = Filters.All) => {
     state.filter = newFilter;
 }
 
+/**
+ * Retorna el filtro actual
+ * @returns {Filters}
+ */
 const getCurrentFilter = ()=>{
     return state.filter;
 }
@@ -88,7 +98,7 @@ export default {
   deleteCompleted,
   deleteTodo,
   getCurrentFilter,
-  getTodo,
+  getTodos,
   initStore,
   loadStore,
   setFilter,
