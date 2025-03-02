@@ -11,6 +11,7 @@ const state ={
         new Todo('Piedra del alama'),
         new Todo('Piedra del infinito'),
         new Todo('Piedra del tiempo'),
+        new Todo('Piedra de la realidad'),
     ],
     filter: Filters.All,
 }
