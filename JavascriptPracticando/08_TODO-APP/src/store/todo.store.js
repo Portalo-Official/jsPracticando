@@ -8,7 +8,7 @@ const Filters = {
 
 const state ={
     todos: [
-        new Todo('Piedra del alama'),
+        new Todo('Piedra del alma'),
         new Todo('Piedra del infinito'),
         new Todo('Piedra del tiempo'),
         new Todo('Piedra de la realidad'),
@@ -17,12 +17,20 @@ const state ={
 }
 
 const initStore = ()=>{
-    console.log(state);
+    loadStore();
     console.log('InitStore 🥑');
 }
 
 const loadStore = () =>{
-    throw new Error('Not implemented');
+    if(!localStorage.getItem('state')) return;
+    let { todos = [] , filter = Filters.All} =JSON.parse(localStorage.getItem("state"));
+    state.todos = todos;
+    state.filter = filter;
+}
+
+const saveStateLocalStorage = () =>{
+    
+    localStorage.setItem("state", JSON.stringify(state));
 }
 
 /**
@@ -53,26 +61,30 @@ const getTodos = (filter = Filters.All)=>{
 const addTodo = (description) =>{
     if(!description) throw new Error("Descripcion es requerida");
     state.todos.push(new Todo(description))
+    saveStateLocalStorage();
 }
 
 const toggleTodo = (todoId) => {
-     if (!todoId) throw new Error("El id es requerido");
-     state.todos = state.todos.map( todo => {
-        if(todo.id === todoId){
-            todo.done = !todo.done
-        }
-        return todo;
-     });
+    if (!todoId) throw new Error("El id es requerido");
+    state.todos = state.todos.map( todo => {
+    if(todo.id === todoId){
+        todo.done = !todo.done
+    }
+    return todo;
+    });
+    saveStateLocalStorage();
 }
 
 const deleteTodo = (todoId) => {
     if (!todoId) throw new Error("El id es requerido");
 
     state.todos = state.todos.filter( todo => todo.id !== todoId);
+    saveStateLocalStorage();
 }
 
 const deleteCompleted = () =>{
     state.todos = state.todos.filter( todo => todo.done);
+    saveStateLocalStorage();
 }
 /**
  * 
@@ -83,6 +95,7 @@ const setFilter = (newFilter = Filters.All) => {
         throw new Error(`El filtro ${newFilter} no existe`);
     }
     state.filter = newFilter;
+    saveStateLocalStorage();
 }
 
 /**
@@ -101,6 +114,7 @@ export default {
   getTodos,
   initStore,
   loadStore,
+  saveStateLocalStorage,
   setFilter,
   toggleTodo,
 };
