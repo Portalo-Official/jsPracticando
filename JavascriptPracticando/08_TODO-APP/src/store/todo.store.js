@@ -83,7 +83,8 @@ const deleteTodo = (todoId) => {
 }
 
 const deleteCompleted = () =>{
-    state.todos = state.todos.filter( todo => todo.done);
+    //Filtrar por aquello que done= false
+    state.todos = state.todos.filter( todo => !todo.done);
     saveStateLocalStorage();
 }
 /**
