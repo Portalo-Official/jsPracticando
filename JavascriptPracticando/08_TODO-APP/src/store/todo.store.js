@@ -1,6 +1,6 @@
 import { Todo} from '../todos/models/todo.model'
 
-const Filters = {
+export const Filters = {
     All: 'all',
     Completed: 'Completed',
     Pendind: 'Pending',
@@ -92,8 +92,9 @@ const deleteCompleted = () =>{
  * @param {Filters} newFilter 
  */
 const setFilter = (newFilter = Filters.All) => {
-    if(Object.keys(Filters).includes(newFilter)){
-        throw new Error(`El filtro ${newFilter} no existe`);
+
+    if (!Object.values(Filters).includes(newFilter)) {
+      throw new Error(`El filtro ${newFilter} no existe`);
     }
     state.filter = newFilter;
     saveStateLocalStorage();
