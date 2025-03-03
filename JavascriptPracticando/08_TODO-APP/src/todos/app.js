@@ -29,8 +29,11 @@ export const App = (elementId) => {
 
     //Referencias HTML
     const newDescriptionInput = document.querySelector(ElementIDs.NewTodoInput);
+    const todoListUL = document.querySelector(ElementIDs.TodoList);
 
     //Listeners 
+    
+    //Add Todo to TodoList
     newDescriptionInput.addEventListener('keyup', ( event )=>{
         //Clausulas Guardia
         //Sale si no mete nada o espacio o es distinto de enter
@@ -39,9 +42,37 @@ export const App = (elementId) => {
 
         todoStore.addTodo(event.target.value);
         displayTodos();
-        
+
         //Borrar caja de texto
         event.target.value = '';
     })
 
+    //Completar Todo
+    todoListUL.addEventListener('click', ( event) =>{
+        
+        const element = event.target.closest('[data-id]');
+        let idTodo = element.getAttribute("data-id");
+        todoStore.toggleTodo(idTodo);
+        displayTodos();
+        
+        // unificando listeners
+        // if (event.target.className === "destroy"){
+        //     todoStore.deleteTodo(idTodo);
+        // }else{
+        //     todoStore.toggleTodo(idTodo);
+        // }
+        // displayTodos();
+    })
+
+    //Eliminar 
+    todoListUL.addEventListener('click', ( event) =>{
+        
+        const element = event.target.closest('[data-id]');
+        let isDestroyButton = event.target.className === "destroy";
+        let idTodo = element.getAttribute("data-id");
+
+        if (!element || !isDestroyButton ) return;
+        todoStore.deleteTodo(idTodo);
+        displayTodos();
+    })
 }
