@@ -1,12 +1,13 @@
 import todoStore, { Filters } from "../store/todo.store";
 import html from "./app.html?raw";
-import { renderTodos } from "./use-cases";
+import { renderTodos, renderPending } from "./use-cases";
 
 const ElementIDs = {
   TodoList: '.todo-list',
   NewTodoInput:'#new-todo-input',
   ClearCompleted: '.clear-completed',
   ChangeFilters: '.filtro',
+  PendingCount: '#pending-count',
 };
 
 /**
@@ -19,6 +20,11 @@ export const App = (elementId) => {
         const todos = todoStore.getTodos( todoStore.getCurrentFilter() );
         let id = ElementIDs.TodoList;
         renderTodos(id, todos);
+        updatePendingCount();
+    }
+
+    const updatePendingCount = () =>{
+        renderPending(ElementIDs.PendingCount);
     }
 
     //Cuando la funcion app se llama
@@ -86,7 +92,7 @@ export const App = (elementId) => {
         displayTodos();
     })
 
-  
+    // Cambiar filtro
     filtersLI.forEach( element => {
          element.addEventListener ('click' , ( event )=>{
             // Quitar el 'selected' de todos
@@ -110,5 +116,7 @@ export const App = (elementId) => {
             displayTodos()
         });
     })
+
+
 
 }
