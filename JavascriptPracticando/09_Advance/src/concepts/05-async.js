@@ -12,6 +12,7 @@ export const asyncComponent = ( element ) =>{
         element.innerHTML = hero.name;
     }
     const id = '5d86371fd55e2e2a30fe1ccb2';
+    
     findHero(id)
         .then(renderHero);
 
