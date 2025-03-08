@@ -10,14 +10,17 @@ const state = {
 const loadNextPage = async()=>{
 
    let users = await loadUsersByPage(state.currentPage + 1);
+
    if( users.length === 0) return;
-   
    state.currentPage +=1;
    state.users = users;
 }
 
-const loadPreviusPAge = async()=>{
-    throw new Error("Not implemented");
+const loadPreviusPage = async()=>{
+    let users = await loadUsersByPage(state.currentPage - 1);
+    if (users.length === 0) return;
+    state.currentPage -= 1;
+    state.users = users;
 }
 
 //TODO: implementar
@@ -31,9 +34,17 @@ const reloadPage = async() =>{
 
 export default{
     loadNextPage,
-    loadPreviusPAge,
+    loadPreviusPage,
     onUserChanged,
     reloadPage,
+    /**
+     * 
+     * @returns {User[]}
+     */
     getUsers: ()=> [...state.users],
-    getCurrentPage:()=> [...state.currentPage],
+    /**
+     * 
+     * @returns {Number}
+     */
+    getCurrentPage:()=> state.currentPage,
 }
