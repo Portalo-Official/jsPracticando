@@ -20,8 +20,9 @@ export const hideModal = () =>{
 /**
  * 
  * @param {HTMLDivElement} element 
+ * @param {callback} 
  */
-export const renderModal = ( element ) =>{
+export const renderModal = ( element , callback ) =>{
 
     if( modal ) return;
     modal = document.createElement('div');
@@ -54,6 +55,7 @@ export const renderModal = ( element ) =>{
             userLike[key] = value;
           }
         }
+        callback(userLike);
         hideModal();
     });
 
