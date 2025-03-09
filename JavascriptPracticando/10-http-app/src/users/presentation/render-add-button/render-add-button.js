@@ -1,3 +1,4 @@
+import { showModal } from '../render-modal/render-modal';
 import './render-add-button.css'
 
 /**
@@ -5,7 +6,7 @@ import './render-add-button.css'
  * @param {HTMLDivElement} element 
  * @param { () => void } callback
  */
-export const renderAddButton = (element, callback) =>{
+export const renderAddButton = (element) =>{
 
     const fabButton = document.createElement('button');
     fabButton.innerText = '+';
@@ -15,8 +16,6 @@ export const renderAddButton = (element, callback) =>{
 
     //TODO
     fabButton.addEventListener('click', ()=>{
-        if( !callback )
-            throw new Error('No existe el callback');
-        callback();
+        showModal();
     })
 }
